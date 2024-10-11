@@ -62,6 +62,7 @@ const snoowrap = class snoowrap {
    * @param {string} [options.password] The password of the account to access
    * @param {string} [options.refreshToken] A refresh token for your app
    * @param {string} [options.accessToken] An access token for your app
+   * @param {string} [options.proxy] The proxy to use with requests
    */
   constructor ({
     // The function signature for the constructor is a bit large due to the snake_case aliases. Essentially, it accepts an
@@ -75,7 +76,8 @@ const snoowrap = class snoowrap {
     refresh_token, refreshToken = refresh_token,
     access_token, accessToken = access_token,
     username,
-    password
+    password,
+    proxy
   } = {}) {
     if (!userAgent && !isBrowser) {
       return requiredArg('userAgent');
@@ -88,6 +90,9 @@ const snoowrap = class snoowrap {
     }
     if (isBrowser) {
       this.userAgent = global.navigator.userAgent;
+    }
+    if (proxy) {
+      this.rawRequest = this.rawRequest.defaults({proxy});
     }
     defaults(this, {userAgent, clientId, clientSecret, refreshToken, accessToken, username, password}, {
       clientId: null,
